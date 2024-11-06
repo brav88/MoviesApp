@@ -27,7 +27,14 @@
     </head>
     <body>
         <%
+            session = request.getSession(false);
+
+            if (session != null) {
+                session.invalidate();
+            }
+
             String error = request.getParameter("error");
+            String msg = request.getParameter("msg");
         %>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -39,7 +46,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Start</a>
+                            <a class="nav-link active" aria-current="page" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Register</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Login</a>
@@ -51,6 +58,43 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="registerUser.jsp">
+                            <div class="mb-3">
+                                <label for="txtname" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="txtname" name="txtname">                            
+                            </div>
+                            <div class="mb-3">
+                                <label for="txtlastname" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="txtlastname" name="txtlastname">                            
+                            </div>
+                            <div class="mb-3">
+                                <label for="txtemail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="txtemail" name="txtemail">                            
+                            </div>
+                            <div class="mb-3">
+                                <label for="txtpwd" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="txtpwd" name="txtpwd">
+                            </div>
+                            <div class="mb-3">
+                                <label for="txtpwd2" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="txtpwd2" name="txtpwd2">
+                            </div>       
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>        
+                    </div>                    
+                </div>
+            </div>
+        </div> 
 
         <div class="container d-flex justify-content-center align-items-center vh-100">
             <div class="card" style="width: 18rem;">
@@ -75,11 +119,18 @@
                     </form>                         
                 </div>
                 <% if (error != null) {%>
-                    <div class="footer">
-                        <div class="alert alert-danger">
-                            <label class><%=error%></label>
-                        </div>   
-                    </div>                    
+                <div class="footer">
+                    <div class="alert alert-danger">
+                        <label class><%=error%></label>
+                    </div>   
+                </div>                    
+                <% }%>
+                <% if (msg != null) {%>
+                <div class="footer">
+                    <div class="alert alert-info">
+                        <label class><%=msg%></label>
+                    </div>   
+                </div>                    
                 <% }%>
             </div>
         </div>

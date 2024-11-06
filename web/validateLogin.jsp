@@ -14,7 +14,7 @@
     String path;
     databaseHelper dt = new databaseHelper();
 
-    if (dt.validateLogin(txtemail, txtpwd)) {
+    if (dt.validateLogin(txtemail, txtpwd)) {        
         session.setAttribute("email", txtemail);
         path = "/index.jsp";
     } else {

@@ -43,6 +43,16 @@ public class databaseHelper {
         return false;
     }
 
+    public boolean validateEmail(String txtEmail) throws SQLException {
+        Statement statement = conn.createStatement();
+        String sql = "SELECT * FROM moviesdatabase.users WHERE email = '" + txtEmail + "'";
+        ResultSet resultset = statement.executeQuery(sql);
+        while (resultset.next()) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean saveFavoriteMovie(String email, int idMovie) throws SQLException {
         try {
             Statement statement = conn.createStatement();
@@ -52,7 +62,21 @@ public class databaseHelper {
         } catch (SQLException ex) {
             return false;
         }
+    }
 
+    public boolean registerUser(String name, String lastname, String email, String pwd) throws SQLException {
+        try {
+            Statement statement = conn.createStatement();
+            String sql = "INSERT INTO moviesdatabase.users (lastname, firstname, email, pwd, creationDate) VALUES ('"
+                    + lastname + "', '"
+                    + name + "', '"
+                    + email + "', '"
+                    + pwd + "', CURDATE());";
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
     }
 
     public ResultSet getMovies(String email) throws SQLException {
@@ -67,6 +91,18 @@ public class databaseHelper {
                 + "LEFT JOIN moviesdatabase.favoritemovies f "
                 + "ON m.id = f.idMovie "
                 + "AND f.email = '" + email + "';";
+
+        ResultSet resultset = statement.executeQuery(sql);
+        return resultset;
+    }
+    
+    public ResultSet getUser(String email) throws SQLException {
+        Statement statement = conn.createStatement();
+        String sql = "SELECT "
+                + "m.firstName, "
+                + "m.lastName "                
+                + "FROM moviesdatabase.users m "              
+                + "WHERE m.email = '" + email + "';";
 
         ResultSet resultset = statement.executeQuery(sql);
         return resultset;
