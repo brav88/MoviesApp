@@ -7,15 +7,20 @@ CREATE TABLE users (
     firstName varchar(255),
     email varchar(255),
     pwd varchar(255),
+    role varchar(255),
     creationDate datetime,
     PRIMARY KEY (id)
 );
 
-INSERT INTO users (id, lastName, firstName, email, pwd, creationDate)
+INSERT INTO users ( lastName, firstName, email, pwd, creationDate)
 VALUES ('Sandi', 'Braulio', 'brav88@hotmail.com', 'Admin$1234', CURDATE());
 
-INSERT INTO users (id, lastName, firstName, email, pwd, creationDate)
+INSERT INTO users ( lastName, firstName, email, pwd, creationDate)
 VALUES ('Taylor', 'Jason', 'jason.taylor@gmail.com', 'ABC$123', CURDATE());
+
+INSERT INTO users (lastName, firstName, email, pwd, role, creationDate)
+VALUES ('Admin', 'admin', 'admin@admin.com', 'Admin123', "Admin", CURDATE());
+
 
 CREATE TABLE movies (
 	id INT NOT NULL AUTO_INCREMENT,	

@@ -63,6 +63,28 @@ public class databaseHelper {
             return false;
         }
     }
+    
+    public boolean editMovie(int idMovie, String title, String releaseDate, String photoPath) throws SQLException {
+        try {
+            Statement statement = conn.createStatement();
+            String sql = "UPDATE moviesdatabase.movies SET title = '" + title + "', releaseDate='" + releaseDate + "', photo = '" + photoPath + "' WHERE id = " + idMovie + "";
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    public boolean removeFavoriteMovie(String email, int idMovie) throws SQLException {
+        try {
+            Statement statement = conn.createStatement();
+            String sql = "DELETE FROM  moviesdatabase.favoritemovies WHERE idMovie = " + idMovie + " AND email = '" + email + "'";
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
 
     public boolean registerUser(String name, String lastname, String email, String pwd) throws SQLException {
         try {
@@ -79,7 +101,7 @@ public class databaseHelper {
         }
     }
 
-    public ResultSet getMovies(String email) throws SQLException {
+    public ResultSet getMovies(String email, String join) throws SQLException {
         Statement statement = conn.createStatement();
         String sql = "SELECT "
                 + "m.id, "
@@ -88,20 +110,21 @@ public class databaseHelper {
                 + "YEAR(m.releaseDate) AS releaseDate, "
                 + "f.idMovie IS NOT NULL AS isFavorite "
                 + "FROM moviesdatabase.movies m "
-                + "LEFT JOIN moviesdatabase.favoritemovies f "
+                + join + " JOIN moviesdatabase.favoritemovies f "
                 + "ON m.id = f.idMovie "
                 + "AND f.email = '" + email + "';";
 
         ResultSet resultset = statement.executeQuery(sql);
         return resultset;
     }
-    
+
     public ResultSet getUser(String email) throws SQLException {
         Statement statement = conn.createStatement();
         String sql = "SELECT "
                 + "m.firstName, "
-                + "m.lastName "                
-                + "FROM moviesdatabase.users m "              
+                + "m.lastName,"
+                + "m.role "
+                + "FROM moviesdatabase.users m "
                 + "WHERE m.email = '" + email + "';";
 
         ResultSet resultset = statement.executeQuery(sql);
